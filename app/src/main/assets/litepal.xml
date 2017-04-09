@@ -1,0 +1,9 @@
+<litepal>
+    <dbanme value="cool_weaher"/>
+    <version value="1"/>
+    <list>
+        <mapping class="com.warden.coolweather.db.Province"/>
+        <mapping class="com.warden.coolweather.db.City"/>
+        <mapping class="com.warden.coolweather.db.County"/>
+    </list>
+</litepal>
