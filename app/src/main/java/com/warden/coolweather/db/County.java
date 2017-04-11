@@ -1,10 +1,12 @@
 package com.warden.coolweather.db;
 
+import org.litepal.crud.DataSupport;
+
 /**
  * Created by Warden on 2017/4/9.
  */
 
-public class County {
+public class County extends DataSupport {
     private int id;
     private String countyName;
     private String weatherId;
@@ -41,4 +43,6 @@ public class County {
     public void setCityId(int cityId) {
         this.cityId = cityId;
     }
+
+
 }
