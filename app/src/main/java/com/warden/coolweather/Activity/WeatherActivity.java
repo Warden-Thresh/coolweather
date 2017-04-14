@@ -147,7 +147,7 @@ public class WeatherActivity extends AppCompatActivity {
                             editor.apply();
                             mWeatherId = weather.basic.weatherId;
                             showWeatherInfo(weather);
-                            Toast.makeText(WeatherActivity.this, "获取天气信息已刷新", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(WeatherActivity.this, "天气信息已刷新", Toast.LENGTH_SHORT).show();
                         } else {
                             Toast.makeText(WeatherActivity.this, "获取天气信息失败", Toast.LENGTH_SHORT).show();
                         }
