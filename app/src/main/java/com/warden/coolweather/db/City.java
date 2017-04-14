@@ -2,14 +2,14 @@ package com.warden.coolweather.db;
 
 import org.litepal.crud.DataSupport;
 
-/**
- * Created by Warden on 2017/4/9.
- */
-
 public class City extends DataSupport {
+
     private int id;
+
     private String cityName;
+
     private int cityCode;
+
     private int provinceId;
 
     public int getId() {
@@ -43,4 +43,5 @@ public class City extends DataSupport {
     public void setProvinceId(int provinceId) {
         this.provinceId = provinceId;
     }
+
 }
