@@ -21,14 +21,19 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.google.gson.Gson;
 import com.warden.coolweather.R;
 import com.warden.coolweather.gson.Forecast;
+import com.warden.coolweather.gson.GankFuLi;
 import com.warden.coolweather.gson.Weather;
 import com.warden.coolweather.service.AutoUpdateService;
 import com.warden.coolweather.util.HttpUtil;
 import com.warden.coolweather.util.Utility;
 
 import java.io.IOException;
+import java.net.URL;
+import java.util.List;
+import java.util.Random;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -124,7 +129,8 @@ public class WeatherActivity extends AppCompatActivity {
         if (bingPic != null) {
             Glide.with(this).load(bingPic).into(bingPicImg);
         } else {
-            loadBingPic();
+            //loadBingPic();
+            loadMeiZiPic();
         }
     }
 
@@ -168,7 +174,8 @@ public class WeatherActivity extends AppCompatActivity {
                 });
             }
         });
-        loadBingPic();
+        //loadBingPic();
+        loadMeiZiPic();
     }
 
     /**
@@ -197,6 +204,44 @@ public class WeatherActivity extends AppCompatActivity {
             }
         });
     }
+
+    /**
+     * 加载meizi图
+     */
+    private void loadMeiZiPic() {
+        final String requestMeiZiPic = "http://gank.io/api/data/福利/10/1";
+        HttpUtil.sendOkHttpRequest(requestMeiZiPic, new Callback() {
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                String responseText = response.body().string();
+                SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(WeatherActivity.this).edit();
+                final GankFuLi gankFuLi = Utility.handleMeiZiResponse(responseText);
+                Random random = new Random();
+                int index = random.nextInt(gankFuLi.getMeizis().size());
+                GankFuLi.MeiZi meiZi = gankFuLi.getMeizis().get(index);
+                final String bingPic = meiZi.getUrl();
+                Log.d("MSG",meiZi.getUrl());
+                editor.putString("bing_pic", bingPic);
+                editor.apply();
+
+
+
+
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Glide.with(WeatherActivity.this).load(bingPic).into(bingPicImg);
+                    }
+                });
+            }
+
+            @Override
+            public void onFailure(Call call, IOException e) {
+                e.printStackTrace();
+            }
+        });
+    }
+
 
     /**
      * 处理并展示Weather实体类中的数据。

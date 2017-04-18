@@ -1,16 +1,20 @@
 package com.warden.coolweather.util;
 
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.warden.coolweather.db.City;
 import com.warden.coolweather.db.County;
 import com.warden.coolweather.db.Province;
+import com.warden.coolweather.gson.GankFuLi;
 import com.warden.coolweather.gson.Weather;
 import com.google.gson.Gson;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.List;
 
 public class Utility {
 
@@ -96,5 +100,22 @@ public class Utility {
         }
         return null;
     }
+    public static GankFuLi handleMeiZiResponse(String response) {
+        try {
+            Gson gson = new Gson();
+            GankFuLi gankFuLi = gson.fromJson(response, GankFuLi.class);
+            List<GankFuLi.MeiZi> meiZiList = gankFuLi.getMeizis();
 
+            Log.d("MSGjson",meiZiList.toString());
+            for (GankFuLi.MeiZi meiZi:meiZiList
+                    ) {
+                Log.d("MSGjson",meiZi.getUrl());
+            }
+            return gankFuLi;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 }
