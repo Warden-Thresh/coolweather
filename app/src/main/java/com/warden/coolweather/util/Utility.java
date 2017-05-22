@@ -3,12 +3,12 @@ package com.warden.coolweather.util;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.google.gson.Gson;
 import com.warden.coolweather.db.City;
 import com.warden.coolweather.db.County;
 import com.warden.coolweather.db.Province;
 import com.warden.coolweather.gson.GankFuLi;
 import com.warden.coolweather.gson.Weather;
-import com.google.gson.Gson;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -91,10 +91,7 @@ public class Utility {
      */
     public static Weather handleWeatherResponse(String response) {
         try {
-            JSONObject jsonObject = new JSONObject(response);
-            JSONArray jsonArray = jsonObject.getJSONArray("HeWeather");
-            String weatherContent = jsonArray.getJSONObject(0).toString();
-            return new Gson().fromJson(weatherContent, Weather.class);
+            return new Gson().fromJson(response, Weather.class);
         } catch (Exception e) {
             e.printStackTrace();
         }

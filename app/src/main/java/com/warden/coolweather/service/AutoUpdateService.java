@@ -50,15 +50,16 @@ public class AutoUpdateService extends Service {
         if (weatherString != null) {
             // 有缓存时直接解析天气数据
             Weather weather = Utility.handleWeatherResponse(weatherString);
-            String weatherId = weather.basic.weatherId;
-            String weatherUrl = "http://guolin.tech/api/weather?cityid=" + weatherId + "&key=0d4a4167be61427cab63223e1c184d21";
+            String weatherId = weather.getHeWeather5().get(0).getBasic().getId();
+            String weatherUrl = "https://api.heweather.com/v5/weather?city=" + weatherId + "&key=0d4a4167be61427cab63223e1c184d21";
             HttpUtil.sendOkHttpRequest(weatherUrl, new Callback() {
                 @Override
                 public void onResponse(Call call, Response response) throws IOException {
                     String responseText = response.body().string();
                     Weather weather = Utility.handleWeatherResponse(responseText);
-
-                    if (weather != null && "ok".equals(weather.status)) {
+                    String status;
+                    status = weather.getHeWeather5().get(0).getStatus();
+                    if (weather != null && "ok".equals(status)) {
                         SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(AutoUpdateService.this).edit();
                         editor.putString("weather", responseText);
                         editor.apply();
@@ -93,5 +94,4 @@ public class AutoUpdateService extends Service {
             }
         });
     }
-
 }
